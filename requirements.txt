@@ -1,0 +1,7 @@
+Flask
+Flask-Cors
+PyJWT
+pymongo
+python-dotenv
+bcrypt 
+gunicorn==21.2.0
