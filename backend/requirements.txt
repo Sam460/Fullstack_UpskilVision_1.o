@@ -5,3 +5,4 @@ Flask-SQLAlchemy
 python-dotenv
 PyJWT
 werkzeug
+gunicorn==21.2.0
