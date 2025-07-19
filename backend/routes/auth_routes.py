@@ -60,7 +60,7 @@ def token_required(f):
 
     return decorated
 
-@auth.route('/login', methods=['POST'])
+@auth.route('/api/login', methods=['POST'])
 def login():
     try:
         data = request.get_json()
