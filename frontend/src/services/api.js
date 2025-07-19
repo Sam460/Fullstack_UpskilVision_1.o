@@ -2,11 +2,12 @@ import axios from 'axios';
 
 // Create Axios instance
 const api = axios.create({
-  baseURL: 'http://localhost:5000', // Replace with import.meta.env.VITE_API_URL if needed
+  baseURL: import.meta.env.VITE_API_URL, // Replace with import.meta.env.VITE_API_URL if needed
   withCredentials: true,
   headers: {
     'Content-Type': 'application/json'
   }
+
 });
 
 // Add request interceptor to include token

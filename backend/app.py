@@ -1,3 +1,4 @@
+import os;
 from flask import Flask
 from flask_cors import CORS
 from backend.routes.auth_routes import auth
@@ -7,7 +8,7 @@ from backend.routes.audit_routes import audit
 
 def create_app():
     app = Flask(__name__)
-    
+    CORS(app, supports_credentials=True, origins=[os.getenv("FRONTEND_URL")])
     # Configure CORS
     CORS(app, resources={
         r"/api/*": {
