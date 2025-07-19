@@ -1,8 +1,14 @@
 from pymongo import MongoClient
 from datetime import datetime
+from dotenv import load_dotenv
+import os
 
-# Connect to MongoDB
-client = MongoClient('mongodb://localhost:27017/')
+# Load environment variables from .env (optional)
+load_dotenv()
+
+# Connect to MongoDB (fallback to localhost if MONGO_URI is not set)
+mongo_uri = os.getenv('MONGO_URI', 'mongodb://localhost:27017/')
+client = MongoClient(mongo_uri)
 db = client['upskill_vision']
 
 def reset_database():

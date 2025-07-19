@@ -1,21 +1,36 @@
 from pymongo import MongoClient
 from pymongo.errors import ConnectionFailure
+from dotenv import load_dotenv
+import os
+
+# Load .env file if present
+load_dotenv()
 
 def check_mongodb():
     try:
-        client = MongoClient('mongodb://localhost:27017/',
-                           serverSelectionTimeoutMS=2000)
-        # The ismaster command is cheap and does not require auth.
-        client.admin.command('ismaster')
-        print("MongoDB is running!")
+        # Get MongoDB URI from environment variable
+        mongo_uri = os.getenv('MONGO_URI')
+
+        if not mongo_uri:
+            raise ValueError("MONGO_URI is not set in environment variables")
+
+        # Connect to MongoDB
+        client = MongoClient(mongo_uri, serverSelectionTimeoutMS=5000)
+
+        # Ping server to test connection
+        client.admin.command('ping')
+        print("✅ MongoDB connection successful!")
         return True
-    except ConnectionFailure:
-        print("MongoDB is not running. Please start MongoDB service.")
-        print("\nFor Windows:")
-        print("1. Open Command Prompt as Administrator")
-        print("2. Run: net start MongoDB")
-        print("\nOr start MongoDB Compass and connect to localhost:27017")
+
+    except ConnectionFailure as e:
+        print("❌ MongoDB connection failed:")
+        print(str(e))
+        return False
+
+    except ValueError as ve:
+        print("❌ Configuration error:")
+        print(str(ve))
         return False
 
 if __name__ == "__main__":
-    check_mongodb() 
+    check_mongodb()
