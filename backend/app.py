@@ -1,5 +1,5 @@
 import os
-from flask import Flask
+from flask import Flask, request
 from flask_cors import CORS
 from routes.auth_routes import auth
 from routes.course_routes import courses
@@ -44,15 +44,14 @@ def create_app():
 
     @app.after_request
     def after_request(response):
-        origin = response.headers.get("Access-Control-Allow-Origin")
-        # If no origin is set, allow local + vercel frontend
-        if not origin:
-            response.headers.add("Access-Control-Allow-Origin", "http://localhost:5173")
-            if os.getenv("FRONTEND_URL"):
-                response.headers.add("Access-Control-Allow-Origin", os.getenv("FRONTEND_URL"))
-        response.headers.add("Access-Control-Allow-Headers", "Content-Type,Authorization")
-        response.headers.add("Access-Control-Allow-Methods", "GET,PUT,POST,DELETE,OPTIONS")
-        response.headers.add("Access-Control-Allow-Credentials", "true")
+        request_origin = request.headers.get("Origin")
+
+        if request_origin in allowed_origins:
+            response.headers["Access-Control-Allow-Origin"] = request_origin
+
+        response.headers["Access-Control-Allow-Headers"] = "Content-Type,Authorization"
+        response.headers["Access-Control-Allow-Methods"] = "GET,PUT,POST,DELETE,OPTIONS"
+        response.headers["Access-Control-Allow-Credentials"] = "true"
         return response
 
     return app
