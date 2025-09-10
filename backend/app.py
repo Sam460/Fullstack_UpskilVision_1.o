@@ -1,9 +1,9 @@
 import os;
 from flask import Flask
 from flask_cors import CORS
-from backend.routes.auth_routes import auth
-from backend.routes.course_routes import courses
-from backend.routes.audit_routes import audit
+from routes.auth_routes import auth
+from routes.course_routes import courses
+from routes.audit_routes import audit
 
 
 def create_app():
@@ -12,13 +12,13 @@ def create_app():
     # Configure CORS
     CORS(app, resources={
         r"/api/*": {
-            "origins": ["http://localhost:5173"],
+            "origins": ["http://localhost:5173","https://fullstack-upskil-vision-1-c8giitbmg.vercel.app"],
             "methods": ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
             "allow_headers": ["Content-Type", "Authorization"],
             "supports_credentials": True
         },
         r"/auth/*": {
-            "origins": ["http://localhost:5173"],
+            "origins": ["http://localhost:5173","https://fullstack-upskil-vision-1-c8giitbmg.vercel.app"],
             "methods": ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
             "allow_headers": ["Content-Type", "Authorization"],
             "supports_credentials": True
@@ -32,7 +32,7 @@ def create_app():
 
     @app.after_request
     def after_request(response):
-        response.headers.add('Access-Control-Allow-Origin', 'http://localhost:5173')
+        response.headers.add('Access-Control-Allow-Origin', 'http://localhost:5173', 'https://fullstack-upskil-vision-1-c8giitbmg.vercel.app')
         response.headers.add('Access-Control-Allow-Headers', 'Content-Type,Authorization')
         response.headers.add('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE,OPTIONS')
         response.headers.add('Access-Control-Allow-Credentials', 'true')

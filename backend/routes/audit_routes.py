@@ -4,7 +4,7 @@ from bson import ObjectId
 from functools import wraps
 from flask_cors import cross_origin, CORS
 from .auth_routes import token_required
-from ..db import audit_log_collection, users_collection, courses_collection
+from db import audit_log_collection, users_collection, courses_collection
 
 audit = Blueprint('audit', __name__)
 CORS(audit, resources={r"/api/audit/*": {"origins": "http://localhost:5173"}})

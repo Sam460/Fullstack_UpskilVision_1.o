@@ -2,7 +2,9 @@ from flask import Blueprint, request, jsonify
 from flask import Blueprint, request, jsonify
 from datetime import datetime, timedelta
 import jwt
-from backend.db import users_collection
+from db import users_collection
+import jwt
+from db import users_collection
 from functools import wraps
 import os
 from dotenv import load_dotenv
@@ -60,7 +62,7 @@ def token_required(f):
 
     return decorated
 
-@auth.route('/api/login', methods=['POST'])
+@auth.route('/login', methods=['POST'])
 def login():
     try:
         data = request.get_json()
@@ -135,6 +137,44 @@ def login():
     except Exception as e:
         print(f"Login error: {str(e)}")
         return jsonify({'error': 'Login failed', 'message': str(e)}), 500
+
+@auth.route('/current_user', methods=['GET'])
+@token_required
+def get_current_user(current_user):
+    try:
+        print("Current user data from token:", current_user)  # Debug print
+        
+        # Get user from database using user_id from token
+        from bson import ObjectId
+        user = users_collection.find_one({'_id': ObjectId(current_user['user_id'])})
+        
+        if not user:
+            print(f"User not found for ID: {current_user['user_id']}")
+            return jsonify({'error': 'User not found'}), 404
+
+        # Convert ObjectId to string and remove sensitive data
+        user_data = {
+            'id': str(user['_id']),
+            'email': user['email'],
+            'role': user['role'],
+            'name': user.get('name', ''),
+            'profile_image': user.get('profile_image', '')
+        }
+        
+        print(f"Returning user data: {user_data}")  # Debug print
+        return jsonify(user_data), 200
+        
+    except Exception as e:
+        print(f"Error in current_user: {str(e)}")
+        return jsonify({
+            'error': 'Failed to get user data',
+            'details': str(e)
+        }), 500
+        print(f"Error in current_user: {str(e)}")
+        return jsonify({
+            'error': 'Failed to get user data',
+            'details': str(e)
+        }), 500
 
 @auth.route('/check-email', methods=['POST', 'OPTIONS'])
 def check_email():

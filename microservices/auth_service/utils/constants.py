@@ -1,1 +1,0 @@
-VALID_ROLES = ['HR Admin', 'Instructor', 'Participant'] 

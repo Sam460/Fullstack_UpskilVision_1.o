@@ -1,6 +1,6 @@
 from datetime import datetime, timedelta
 from bson import ObjectId
-from backend.db import modules_collection, assignments_collection, quizzes_collection
+from db import modules_collection, assignments_collection, quizzes_collection
 
 def seed_course_content(course_id, instructor_id):
     try:

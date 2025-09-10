@@ -1,6 +1,6 @@
 from flask import Blueprint, request, jsonify
 from flask_cors import cross_origin
-from backend.db import (
+from db import (
     courses_collection, 
     enrollments_collection,
     users_collection,
@@ -10,8 +10,8 @@ from backend.db import (
     audit_log_collection,
     submissions_collection
 )
-from backend.routes.auth_routes import token_required
-from backend.scripts.seed_data import seed_course_content
+from routes.auth_routes import token_required
+from scripts.seed_data import seed_course_content
 from bson import ObjectId
 from datetime import datetime
 from werkzeug.utils import secure_filename
