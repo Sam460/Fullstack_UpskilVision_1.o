@@ -12,7 +12,7 @@ def create_app():
     # Define allowed origins: local + deployed Vercel frontend
     allowed_origins = [
         "http://localhost:5173",
-        os.getenv("FRONTEND_URL", "https://vercel.com/samrat-biswas-projects-8380ca95/fullstack-upskil-vision-1-o/3emMCNbRorFYT1f3HTxSnKzXgdQR").rstrip("/")  # e.g., https://your-frontend.vercel.app
+        os.getenv("FRONTEND_URL", "").rstrip("/")  # e.g., https://your-frontend.vercel.app
     ]
 
     # Configure CORS
